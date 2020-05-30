@@ -3,7 +3,7 @@ import { Consumer } from "../../context";
 import TextInput from "../layout/TextInput";
 import axios from "axios";
 
-class AddContact extends Component {
+class EditContact extends Component {
   state = {
     name: "",
     email: "",
@@ -12,6 +12,18 @@ class AddContact extends Component {
     success: { name: false, email: false, phone: false },
   };
 
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((response) => response.json())
+      .then((contact) => {
+        this.setState({
+          name: contact.name,
+          email: contact.email,
+          phone: contact.phone,
+        });
+      });
+  }
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   onSubmit = (dispatch, e) => {
     e.preventDefault();
@@ -47,15 +59,18 @@ class AddContact extends Component {
         success: { phone: true },
       });
     }
-
+    const { id } = this.props.match.params;
     const newContact = {
       name,
       email,
       phone,
     };
     axios
-      .post("https://jsonplaceholder.typicode.com/users", newContact)
-      .then((res) => dispatch({ type: "ADD_CONTACT", payload: res.data }));
+      .put(`https://jsonplaceholder.typicode.com/users/${id}`, newContact)
+      .then((res) => {
+        dispatch({ type: "UPDATE", payload: res.data });
+      });
+
     //clear state
     this.setState({
       name: "",
@@ -83,7 +98,7 @@ class AddContact extends Component {
                   letterSpacing: "0.2rem",
                 }}
               >
-                Add Contact
+                Edit Contact
               </div>
               <div className="card-body">
                 <form onSubmit={this.onSubmit.bind(this, dispatch)}>
@@ -95,6 +110,7 @@ class AddContact extends Component {
                     onChange={this.onChange}
                     error={errors.name}
                     success={success.name}
+                    className="mb-3"
                   />
                   <TextInput
                     label="Email"
@@ -117,7 +133,7 @@ class AddContact extends Component {
                   />
                   <input
                     type="submit"
-                    value="Save"
+                    value="Update"
                     className="btn btn-block btn-primary"
                     style={{ letterSpacing: "0.2rem" }}
                   />
@@ -130,4 +146,4 @@ class AddContact extends Component {
     );
   }
 }
-export default AddContact;
+export default EditContact;

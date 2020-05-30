@@ -13,7 +13,7 @@ const TextInput = ({
   success,
 }) => {
   return (
-    <div className="form-group">
+    <div className="form-group" style={{ marginBottom: "50px" }}>
       <label htmlFor={name}>{label}</label>
       <input
         type={type}

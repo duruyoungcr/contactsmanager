@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Consumer } from "../../context";
+import axios from "axios";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 class Contact extends Component {
   state = {
     showInfo: false,
   };
   onClickDelete = (id, dispatch) => {
+    axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
     dispatch({ type: "DELETE", payload: id });
   };
 
@@ -21,7 +24,14 @@ class Contact extends Component {
             <div className="card card-body mb-3" id="contact-box">
               <div>
                 <h5>
-                  {contact.name}
+                  <Link
+                    to={`/contact/${contact.id}`}
+                    style={{ cursor: "pointer", textDecoration: "none" }}
+                    onClick={this.handleclick}
+                  >
+                    {contact.name}
+                  </Link>
+
                   <i
                     onClick={() => {
                       this.setState({

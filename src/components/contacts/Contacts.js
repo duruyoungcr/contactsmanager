@@ -21,19 +21,7 @@ class Contacts extends Component {
                 name="search"
                 id="search"
                 placeholder="Search Contacts"
-                style={{
-                  width: "100%",
-                  fontStyle: "italic",
-                  fontSize: "24px",
-                  border: "1px solid blue",
-                  borderRadius: "8px",
-                  letterSpacing: "5px",
-                  padding: "5px 0px",
-                }}
               />
-              <h2 className="mb-3" style={{ letterSpacing: "5px" }}>
-                Favourites
-              </h2>
               {contacts.map((contact) => (
                 <Contact key={contact.id} contact={contact} />
               ))}

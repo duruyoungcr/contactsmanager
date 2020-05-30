@@ -16,6 +16,15 @@ const reducer = (state, action) => {
         ...state,
         contacts: [action.payload, ...state.contacts],
       };
+    case "UPDATE":
+      return {
+        ...state,
+        contacts: state.contacts.map((contact) =>
+          contact.id === action.payload.id
+            ? (contact = action.payload)
+            : contact
+        ),
+      };
     default:
       return state;
   }
@@ -45,7 +54,6 @@ export class Provider extends Component {
           return comparison;
         }
         let sortedData = data.sort(compare);
-        console.log(sortedData);
         this.setState({
           contacts: sortedData,
         });
